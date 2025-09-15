@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformador de Fórmulas Lógicas</title>
+	<link rel="stylesheet" href="MyMathStyle.css">
+	<script>
+		window.MathJax = {
+		  tex: {
+			inlineMath: [['$', '$'], ['\\(', '\\)']],
+			displayMath: [['$$', '$$'], ['\\[', '\\]']],
+			packages: {'[+]': ['ams']},
+			processEscapes: true
+		  },
+		  options: {
+			skipHtmlTags: ['script','noscript','style','textarea','pre'],
+			ignoreHtmlClass: 'tex2jax_ignore',
+			processHtmlClass: 'tex2jax_process'
+		  },
+		  startup: {
+			typeset: false
+		  }
+		};
+  	</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+	
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Transformador de Fórmulas Lógicas</h1>
+            <p>Converta fórmulas lógicas para CNF Prenex, DNF Prenex, Forma Cláusal e Cláusulas de Horn</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <label for="formula-input">Digite sua fórmula em notação LaTeX:</label>
+                <textarea 
+                    id="formula-input" 
+                    class="formula-input"
+                    rows="3"
+                    placeholder="Exemplo: \forall x \exists y (P(x) \implies Q(x,y)) \land R(x)"
+                ></textarea>
+                <button class="transform-btn" onclick="transformFormula()">Transformar Fórmula</button>
+            </div>
+
+            <div id="error-display"></div>
+
+            <div id="results" class="results-section">
+                <div class="step original">
+                    <h3>
+                        <span class="step-icon">1</span>
+                        Fórmula Original
+                    </h3>
+                    <div id="original-formula" class="formula-display"></div>
+                </div>
+
+                <div class="step prenex-cnf">
+                    <h3>
+                        <span class="step-icon">2</span>
+                        Forma Normal Conjuntiva Prenex (CNF Prenex)
+                    </h3>
+                    <div id="cnf-prenex-formula" class="formula-display"></div>
+                    <div id="cnf-prenex-steps" class="steps-list"></div>
+                </div>
+
+                <div class="step prenex-dnf">
+                    <h3>
+                        <span class="step-icon">3</span>
+                        Forma Normal Disjuntiva Prenex (DNF Prenex)
+                    </h3>
+                    <div id="dnf-prenex-formula" class="formula-display"></div>
+                    <div id="dnf-prenex-steps" class="steps-list"></div>
+                </div>
+
+                <div class="step clausal">
+                    <h3>
+                        <span class="step-icon">4</span>
+                        Forma Cláusal
+                    </h3>
+                    <div id="clausal-formula" class="formula-display"></div>
+                    <div id="clausal-steps" class="steps-list"></div>
+                </div>
+
+                <div class="step horn">
+                    <h3>
+                        <span class="step-icon">5</span>
+                        Cláusulas de Horn
+                    </h3>
+                    <div id="horn-formula" class="formula-display"></div>
+                    <div id="horn-steps" class="steps-list"></div>
+                </div>
+            </div>
+
+            <div class="examples">
+                <h3>Exemplos de Fórmulas</h3>
+                <div class="example-formula" onclick="setExample(this.textContent)">
+                    <code>\forall x \exists y (P(x) \implies Q(x,y))</code>
+                </div>
+                <div class="example-formula" onclick="setExample(this.textContent)">
+                    <code>\forall x (P(x) \land Q(x)) \implies \exists y R(y)</code>
+                </div>
+                <div class="example-formula" onclick="setExample(this.textContent)">
+                    <code>\exists x \forall y (P(x) \lor \neg Q(y)) \land R(x,y)</code>
+                </div>
+                <div class="example-formula" onclick="setExample(this.textContent)">
+                    <code>\forall x \forall y (P(x) \implies Q(y)) \lor \exists z R(z)</code>
+                </div>
+                <div class="example-formula" onclick="setExample(this.textContent)">
+                    <code>\neg \forall x (P(x) \land Q(x))</code>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script src="MyMathLib.js" language="javascript"></script>
+
+
+    
+</body>
+</html>

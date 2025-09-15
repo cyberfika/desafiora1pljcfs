@@ -1,0 +1,272 @@
+@charset "utf-8";
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .input-section {
+            margin-bottom: 40px;
+        }
+
+        .input-section label {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .formula-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.1rem;
+            border: 3px solid #e1e8ed;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+        }
+
+        .formula-input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+            background: white;
+        }
+
+        .transform-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .transform-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .transform-btn:active {
+            transform: translateY(0);
+        }
+
+        .progress-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            height: 4px;
+            flex-grow: 1;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .dark-mode .progress-bar {
+            background: #4a5568;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+
+
+        .results-section {
+            display: none;
+        }
+
+        .step {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step.original { border-left-color: #ff6b6b; }
+        .step.prenex-cnf { border-left-color: #4ecdc4; }
+        .step.prenex-dnf { border-left-color: #45b7d1; }
+        .step.clausal { border-left-color: #96ceb4; }
+        .step.horn { border-left-color: #feca57; }
+
+        .step h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .original .step-icon { background: #ff6b6b; }
+        .prenex-cnf .step-icon { background: #4ecdc4; }
+        .prenex-dnf .step-icon { background: #45b7d1; }
+        .clausal .step-icon { background: #96ceb4; }
+        .horn .step-icon { background: #feca57; }
+
+        .formula-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e1e8ed;
+            font-size: 1.3rem;
+            margin: 15px 0;
+            min-height: 60px;
+            justify-content:flex-start;
+			overflow-x: auto;
+        }
+
+        .steps-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .steps-list h4 {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .steps-list ol {
+            color: #555;
+            padding-left: 20px;
+        }
+
+        .steps-list li {
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #d63031;
+            margin-top: 20px;
+        }
+
+        .examples {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .examples h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .example-formula {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e1e8ed;
+        }
+
+        .example-formula:hover {
+            background: #e3f2fd;
+            border-color: #4ecdc4;
+        }
+
+        .example-formula code {
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .formula-input {
+                font-size: 1rem;
+                padding: 15px;
+            }
+        }
+

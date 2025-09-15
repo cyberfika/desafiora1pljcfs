@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformador de Fórmulas Lógicas</title>
+    <link rel="stylesheet" href="MyMathStyle2.css">
+    
+    <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            packages: {'[+]': ['ams']},
+            processEscapes: true
+          },
+          options: {
+            skipHtmlTags: ['script','noscript','style','textarea','pre'],
+            ignoreHtmlClass: 'tex2jax_ignore',
+            processHtmlClass: 'tex2jax_process'
+          },
+          startup: {
+            typeset: false
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <h1>Transformador de Fórmulas Lógicas</h1>
+            <p>Digite uma fórmula bem formada em LaTeX e visualize suas transformações lógicas passo a passo</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <label for="formula-input">Fórmula em LaTeX <span class="tooltip"><i class="fas fa-question-circle tooltip-icon"></i><span class="tooltip-text">Use comandos LaTeX padrão para lógica: \forall, \exists, \land, \lor, \neg, \rightarrow, \leftrightarrow, etc.</span></span></label>
+                <textarea id="formula-input" class="formula-input" placeholder="Ex: \forall x (P(x) \land Q(x))"></textarea>
+                
+                <div class="input-hints">
+                    <span class="hint-tag"><i class="fas fa-lightbulb"></i> Dica: Use parênteses para agrupar expressões</span>
+                    <span class="hint-tag"><i class="fas fa-code"></i> Operadores: \land, \lor, \neg, \rightarrow</span>
+                    <span class="hint-tag"><i class="fas fa-infinity"></i> Quantificadores: \forall, \exists</span>
+                </div>
+
+                <button id="transform-btn" class="transform-btn">
+                    <i class="fas fa-cogs"></i> Transformar Fórmula
+                </button>
+
+                <div id="progress-indicator" class="progress-indicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Processando...</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-message" class="error"></div>
+
+            <div id="results-section" class="results-section">
+                <h2>Transformações Aplicadas <span class="tooltip"><i class="fas fa-question-circle tooltip-icon"></i><span class="tooltip-text">A fórmula é transformada passo a passo nas formas normais lógicas solicitadas</span></span></h2>
+                
+                <div id="original-step" class="step original fade-in">
+                    <h3><span class="step-icon"><i class="fas fa-pen"></i></span> Fórmula Original</h3>
+                    <div id="original-formula" class="formula-display"></div>
+                </div>
+                
+                <div id="prenex-cnf-step" class="step prenex-cnf fade-in">
+                    <h3><span class="step-icon"><i class="fas fa-project-diagram"></i></span> Forma Normal Conjuntiva Prenex</h3>
+                    <div id="prenex-cnf-formula" class="formula-display"></div>
+                    <div class="steps-list">
+                        <h4>Passos para conversão:</h4>
+                        <ol>
+                            <li>Eliminação de bicondicionais</li>
+                            <li>Eliminação de condicionais</li>
+                            <li>Movimento da negação para dentro</li>
+                            <li>Padronização de variáveis</li>
+                            <li>Movimento dos quantificadores para o início</li>
+                            <li>Conversão para forma normal conjuntiva</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="prenex-dnf-step" class="step prenex-dnf fade-in">
+                    <h3><span class="step-icon"><i class="fas fa-sitemap"></i></span> Forma Normal Disjuntiva Prenex</h3>
+                    <div id="prenex-dnf-formula" class="formula-display"></div>
+                    <div class="steps-list">
+                        <h4>Passos para conversão:</h4>
+                        <ol>
+                            <li>Eliminação de bicondicionais</li>
+                            <li>Eliminação de condicionais</li>
+                            <li>Movimento da negação para dentro</li>
+                            <li>Padronização de variáveis</li>
+                            <li>Movimento dos quantificadores para o início</li>
+                            <li>Conversão para forma normal disjuntiva</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="clausal-step" class="step clausal fade-in">
+                    <h3><span class="step-icon"><i class="fas fa-braille"></i></span> Forma Clausal</h3>
+                    <div id="clausal-formula" class="formula-display"></div>
+                    <div class="steps-list">
+                        <h4>Passos para conversão:</h4>
+                        <ol>
+                            <li>Conversão para forma prenex</li>
+                            <li>Eliminação dos quantificadores existenciais</li>
+                            <li>Eliminação dos quantificadores universais</li>
+                            <li>Distribuição de disjunções sobre conjunções</li>
+                            <li>Quebra em cláusulas</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="horn-step" class="step horn fade-in">
+                    <h3><span class="step-icon"><i class="fas fa-bullseye"></i></span> Cláusula de Horn</h3>
+                    <div id="horn-formula" class="formula-display"></div>
+                    <div class="steps-list">
+                        <h4>Passos para conversão:</h4>
+                        <ol>
+                            <li>Identificação de cláusulas com no máximo um literal positivo</li>
+                            <li>Separação de cláusulas de Horn</li>
+                            <li>Verificação de restrições de Horn</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="examples">
+                <h3><i class="fas fa-lightbulb"></i> Exemplos para testar</h3>
+                <div class="examples-grid">
+                    <div class="example-formula" onclick="insertExample('\\forall x (P(x) \\land Q(x))')">
+                        <code>\forall x (P(x) \land Q(x))</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="example-formula" onclick="insertExample('\\exists x \\forall y (P(x) \\lor Q(y))')">
+                        <code>\exists x \forall y (P(x) \lor Q(y))</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="example-formula" onclick="insertExample('\\neg (\\forall x P(x) \\rightarrow \\exists y Q(y))')">
+                        <code>\neg (\forall x P(x) \rightarrow \exists y Q(y))</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="example-formula" onclick="insertExample('P \\land (Q \\lor R)')">
+                        <code>P \land (Q \lor R)</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="example-formula" onclick="insertExample('(A \\lor B) \\land (\\neg A \\lor C)')">
+                        <code>(A \lor B) \land (\neg A \lor C)</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="example-formula" onclick="insertExample('\\forall x (P(x) \\rightarrow (Q(x) \\land R(x)))')">
+                        <code>\forall x (P(x) \rightarrow (Q(x) \land R(x)))</code>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Desenvolvido para o Trabalho de Programação Lógica - RA1</p>
+            <p>© 2025 - Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script>
+        // Inserir exemplo no campo de texto
+        function insertExample(formula) {
+            document.getElementById('formula-input').value = formula;
+            document.getElementById('formula-input').focus();
+        }
+
+        // Alternar tema claro/escuro
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = this.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // Inicializar MathJax
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurações iniciais
+            const transformBtn = document.getElementById('transform-btn');
+            const formulaInput = document.getElementById('formula-input');
+            const progressIndicator = document.getElementById('progress-indicator');
+            const progressFill = document.querySelector('.progress-fill');
+            const resultsSection = document.getElementById('results-section');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Exemplo inicial
+            formulaInput.value = '\\forall x (P(x) \\land Q(x))';
+            
+            // Evento de clique no botão de transformar
+            transformBtn.addEventListener('click', function() {
+                const formula = formulaInput.value.trim();
+                
+                if (!formula) {
+                    showError('Por favor, digite uma fórmula em LaTeX.');
+                    return;
+                }
+                
+                // Esconder resultados anteriores e erros
+                resultsSection.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                // Mostrar indicador de progresso
+                progressIndicator.style.display = 'flex';
+                
+                // Simular progresso
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 5;
+                    progressFill.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        processFormula(formula);
+                    }
+                }, 100);
+            });
+            
+            function processFormula(formula) {
+                try {
+                    // Aqui você implementaria a lógica real de transformação
+                    // Por enquanto, vamos apenas simular os resultados
+                    
+                    // Renderizar a fórmula original
+                    document.getElementById('original-formula').innerHTML = `\\(${formula}\\)`;
+                    
+                    // Gerar fórmulas transformadas (simulação)
+                    document.getElementById('prenex-cnf-formula').innerHTML = `\\(\\forall x (P(x) \\land Q(x))\\)`;
+                    document.getElementById('prenex-dnf-formula').innerHTML = `\\(\\forall x (P(x) \\land Q(x))\\)`;
+                    document.getElementById('clausal-formula').innerHTML = `\\(\\{\\{P(x)\\}, \\{Q(x)\\}\\}\\)`;
+                    document.getElementById('horn-formula').innerHTML = `\\(P(x) \\land Q(x)\\)`;
+                    
+                    // Esconder o indicador de progresso
+                    progressIndicator.style.display = 'none';
+                    
+                    // Mostrar a seção de resultados
+                    resultsSection.style.display = 'block';
+                    
+                    // Renderizar as fórmulas com MathJax
+                    MathJax.typesetPromise().catch(err => console.log('Erro ao renderizar MathJax: ', err));
+                    
+                } catch (error) {
+                    showError('Erro ao processar a fórmula: ' + error.message);
+                    progressIndicator.style.display = 'none';
+                }
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
